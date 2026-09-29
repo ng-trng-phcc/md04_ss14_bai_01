@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: identityservice
+  datasource:
+    url: jdbc:postgresql://localhost:5432/md04_ss13_identity_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8081
+
+jwt:
+  secret: f089ebf477c296f8d32592e8f5a30e5192634e1b82918762f0dc946356b3db00
+  expiration: 3600000
