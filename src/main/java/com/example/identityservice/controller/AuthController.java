@@ -1,11 +1,15 @@
 package com.example.identityservice.controller;
 
+import com.example.identityservice.dto.LoginRequest;
 import com.example.identityservice.dto.RegisterRequest;
 import com.example.identityservice.entity.User;
 import com.example.identityservice.repository.UserRepository;
+import com.example.identityservice.service.AuthService;
 import com.example.identityservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +21,7 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
@@ -38,5 +43,15 @@ public class AuthController {
         return userRepository.findByUsername(username)
                 .map(user -> ResponseEntity.ok(jwtUtil.generateToken(user)))
                 .orElseGet(() -> ResponseEntity.status(404).body("User not found"));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            String token = authService.login(request.getUsername(), request.getPassword());
+            return ResponseEntity.ok(token);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");
+        }
     }
 }
