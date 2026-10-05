@@ -17,6 +17,8 @@ spring:
 server:
   port: 8081
 
-jwt:
-  secret: f089ebf477c296f8d32592e8f5a30e5192634e1b82918762f0dc946356b3db00
-  expiration: 3600000
+app:
+  jwt:
+    secret: "VS6K5vH8N2zB4xR9mQ3pL1wT7yC5vH8N2zB4xR9mQ3pL1wT7yC5vH8N2z"
+    access-token-expiration: 900000 # 15 mins
+    refresh-token-expiration: 604800000 # 7 days

@@ -1,6 +1,7 @@
 package com.example.identityservice.controller;
 
 import com.example.identityservice.dto.LoginRequest;
+import com.example.identityservice.dto.LoginResponse;
 import com.example.identityservice.dto.RegisterRequest;
 import com.example.identityservice.entity.User;
 import com.example.identityservice.repository.UserRepository;
@@ -48,8 +49,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            String token = authService.login(request.getUsername(), request.getPassword());
-            return ResponseEntity.ok(token);
+            LoginResponse response = authService.login(request.getUsername(), request.getPassword());
+            return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");
         }
